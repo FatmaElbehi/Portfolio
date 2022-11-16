@@ -28,7 +28,9 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/login','Auth\LoginController@showLoginForm')->name('login');
-Route::get('/logout','Auth\LoginController@logout')->name('logout');
+
+Route::middleware(['auth'])->prefix('/admin')->group(function () {
+    Route::get('/', 'App\Http\Controllers\AdminController@index')->name('dashboard');
+});
 
 require __DIR__.'/auth.php';
