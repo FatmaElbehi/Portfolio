@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\PageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,22 +16,22 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+});*/
+Route::get('/', 'App\Http\Controllers\PagesController@index')->name('home');
+Route::get('/admin/dashboard', 'App\Http\Controllers\PagesController@dashboard')->name('admin.dashboard');
+Route::get('/admin/main', 'App\Http\Controllers\PagesController@main')->name('admin.main');
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
-Route::middleware(['auth'])->prefix('/admin')->group(function () {
-    Route::get('/', 'App\Http\Controllers\AdminController@index')->name('dashboard');
-});
 
 require __DIR__.'/auth.php';
